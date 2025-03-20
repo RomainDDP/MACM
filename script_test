@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ghdl -a --ieee=synopsys -fexplicit -Whide reg_bank.vhd mem.vhd combi.vhd etages.vhd test_etage.vhd
+ghdl -e --ieee=synopsys -fexplicit -Whide test_etageFE
+ghdl -r --ieee=synopsys -fexplicit -Whide test_etageFE --vcd=etageFE.vcd
