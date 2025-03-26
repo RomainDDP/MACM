@@ -42,35 +42,34 @@ begin
 
   -- Initialisation des ports
   T_clk <= '0';
-  T_npc <= (others => '0');
-  T_npc_fw_br <= (others => '0');
-  T_PCSrc_ER <= '0';
-  T_Bpris_EX <= '0';
-  T_GEL_LI <= '0';
+  T_npc <= (1=>'1', others => '0');
   
-  T_pc_plus_4 <= (others => 'X');
+  T_PCSrc_ER <= '1';
+  T_Bpris_EX <= '0';
+  T_GEL_LI <= '1';
+  
   T_i_FE <= (others => 'X');
- 
+  wait for 5 ns;
+
+  T_npc_fw_br <= (3 => '1', others => '0'); 
+  T_Bpris_EX <= '1';
+  T_clk <= '1';
+  wait for 5 ns;
+
+  --T_npc <= (2=>'1', others => '0');
+
+  T_clk <= '0';
+  wait for 5 ns;
   T_clk <= '1';
   wait for 5 ns;
   T_clk <= '0';
 
-  T_npc <= (2=>'1', others => '0');
-  T_PCSrc_ER <= '1';
-  T_Bpris_EX <= '0';
-
-  
-
-  T_clk <= '1';
-  wait for 5 ns;
-
-
   assert (T_pc_plus_4 = CONV_STD_LOGIC_VECTOR(8, 32) )
     report "PC + 4 should be equal 8 !"
-    severity WARNING
-  ;
-  assert FALSE report "FIN DE SIMULATION" severity FAILURE;
+    severity WARNING;
+  
 
+    assert FALSE report "FIN DE SIMULATION" severity FAILURE;
 end process P_TEST;
 
 end behaviour;
