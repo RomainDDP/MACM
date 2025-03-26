@@ -1,5 +1,5 @@
 *.o
 *.cf
 *.vcd
-
+.hdl_checker/*
 
