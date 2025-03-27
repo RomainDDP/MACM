@@ -199,7 +199,7 @@ end entity;
 architecture etageER_arch of etageER is
 begin
   Res_RE <= Res_Mem_RE when MemToReg_RE = '1' else Res_ALU_RE;
-  Op3_RE <= Op3_RE_out;
+  Op3_RE_out <= Op3_RE;
 end architecture;
 
 
