@@ -97,7 +97,9 @@ begin
   sigOp2 <= i_DE(3 downto 0) when RegSrc(1)='0' else i_DE(15 downto 12);
   Op3_DE <= i_DE(15 downto 12);
 
- 
+  Reg1 <= sigOp1;
+  Reg2 <= SigOp2;
+
 end architecture;
 -- -------------------------------------------------
 
@@ -201,6 +203,3 @@ begin
   Res_RE <= Res_Mem_RE when MemToReg_RE = '1' else Res_ALU_RE;
   Op3_RE_out <= Op3_RE;
 end architecture;
-
-
-

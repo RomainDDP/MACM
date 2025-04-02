@@ -32,7 +32,7 @@ begin
       result := 0;
       for i in 1 to 8 loop
         read(L, ch);
-        if '0' <= ch and ch <= '9' then 
+        if '0' <= ch and ch <= '9' then
             result := character'pos(ch) - character'pos('0');
         elsif 'a' <= ch and ch <= 'f' then
            result := character'pos(ch) - character'pos('a')+10;

@@ -124,36 +124,40 @@ begin
 end process P_TIMEOUT;
 -----------------------------
 -- Test process
-P_Test_FE: process
+P_Test: process
 begin
 
-  -- Initialisation des ports
+  -- Test étage FE.
   npc <= (1=>'1', others => '0');
   PCSrc_ER <= '1';
   Bpris_EX <= '0';
   GEL_LI <= '1';
   i_FE <= (others => 'X');
   wait until (CLK = '1');
-  
-  -- assert (pc_plus_4 = CONV_STD_LOGIC_VECTOR(6, 32) )
-  --   report "PC + 4 should be equal 6 !"
-  --   severity WARNING;
-end process P_Test_FE;
+  -- Résultat : le signal pc_plus_4 devrait prendre
+  -- la valeur 6 au deuxième front montant d'horloge.
+  wait until (CLK = '0');
 
--- P_Test_DE: process
--- begin
---
---   -- Initialisation des ports
---   npc <= (1=>'1', others => '0');
---   PCSrc_ER <= '1';
---   Bpris_EX <= '0';
---   GEL_LI <= '1';
---   i_FE <= (others => 'X');
---   wait until (CLK = '1');
---   
---   assert (pc_plus_4 = CONV_STD_LOGIC_VECTOR(6, 32) )
---     report "PC + 4 should be equal 6 !"
---     severity WARNING;
--- end process P_Test_DE;
-end behaviour;
+  -- Test étage DE.
+  i_DE <= (0 => '1', 1 => '1', 14 => '1', 15 => '1', 16 => '1', others => '0');
+  RegSrc <= ('1', '1'); -- Modifier RegSrc pour voir des changements sur Reg1 et Reg2
+  wait until (CLK = '1');
+  -- Résultat : suivant les valuers de Reg1 et Reg2, vérifier qu'elles soient correctes.
+  wait until (CLK = '0');
 
+  -- Test étage EX pas vrm possible pour l'instant.
+
+  -- Test étage ME.
+  Res_ME <= (0 => '1', others => '0');
+  MemWR_Mem <= '1';
+  WD_ME <= (1 => '1', others => '0');
+  wait until (CLK = '1');
+  -- Résultat : Vérifier que Res_Mem_ME est égal à WD_Me. 
+  wait until (CLK = '0');
+
+  -- Test étage RE y'a vraiment rien à faire là.
+
+
+end process P_Test;
+
+end;

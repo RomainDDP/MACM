@@ -1,5 +1,7 @@
 #!/bin/bash
 
-ghdl -a --ieee=synopsys -fexplicit -Whide reg_bank.vhd mem.vhd combi.vhd etages.vhd test_etage.vhd
-ghdl -e --ieee=synopsys -fexplicit -Whide test_etage
-ghdl -r --ieee=synopsys -fexplicit -Whide test_etage --vcd=etage.vcd
+#ghdl -a --ieee=synopsys -fexplicit -Whide reg_bank.vhd mem.vhd combi.vhd etages.vhd test_etage.vhd
+
+ghdl -a --ieee=synopsys -fexplicit -Whide reg_bank.vhd mem.vhd combi.vhd etages.vhd proc.vhd
+ghdl -e --ieee=synopsys -fexplicit -Whide controlUnit
+ghdl -r --ieee=synopsys -fexplicit -Whide controlUnit --vcd=etage.vcd
