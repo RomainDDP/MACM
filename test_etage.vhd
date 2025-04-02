@@ -64,13 +64,51 @@ etageFE_inst: entity work.etageFE(etageFE_arch)
      i_FE => i_FE
   );
 
--- etageDE_inst: entity work.etageDE(etageDE_arch)
---   port map(
---
---   );
+etageDE_inst: entity work.etageDE(etageDE_arch)
+  port map(
+    pc_plus_4 => pc_plus_4,
+    i_DE => i_DE, WD_ER => WD_ER,
+    Op3_ER => Op3_ER, RegSrc => RegSrc,
+    immSrc => immSrc, RegWr => RegWr,
+    clk => CLK, Init => Init, 
+    Op1 => Op1, Op2 => Op2, 
+    extImm => extImm, Op3_DE => Op3_DE,
+    Reg1 => Reg1, Reg2 => Reg2
+  );
 
--- Clock process 
-P_E_CLK: process
+etageEX_inst: entity work.etageEX(etageEX_arch)
+  port map(
+    Op1_EX => Op1_EX, Op2_EX => Op2_EX,
+    ExtImm_EX => ExtImm_EX,
+    Res_fwd_ME => Res_fwd_ME,
+    Res_fwd_ER => Res_fwd_ER,
+    Op3_EX => Op3_EX, EA_EX => EA_EX, 
+    EB_EX => EB_EX, ALUCtrl_EX => ALUCtrl_EX,
+    ALUSrc_EX => ALUSrc_EX, Res_EX => Res_EX,
+    WD_EX => WD_EX, npc_fw_br => npc_fw_br,
+    CC => CC, Op3_EX_out => Op3_EX_out
+  );
+
+etageME_inst: entity work.etageME(etageME_arch)
+  port map(
+    Res_ME => Res_ME, WD_ME => WD_ME,
+    Op3_ME => Op3_ME, clk => CLK,
+    MemWR_Mem => MemWR_Mem, 
+    Res_Mem_ME => Res_Mem_ME,
+    Res_ALU_ME => Res_ALU_ME,
+    Res_fwd_ME => Res_fwd_ME,
+    Op3_ME_out => Op3_ME_out
+  );
+
+etageER_inst: entity work.etageER(etageER_arch)
+  port map(
+    Res_Mem_RE => Res_Mem_RE,
+    Res_ALU_RE => Res_ALU_RE,
+    MemToReg_RE => MemToReg_RE,
+    Op3_RE => Op3_RE, Res_RE => Res_RE
+  );-- Clock process 
+
+  P_E_CLK: process
 begin
 	CLK <= '1';
 	wait for clkpulse;

@@ -115,7 +115,7 @@ entity etageEX is
   ALUSrc_EX : in std_logic;
   Res_EX, WD_EX, npc_fw_br : out std_logic_vector(31 downto 0);
   CC, Op3_EX_out : out std_logic_vector(3 downto 0)
-      );
+  );
 end entity;
 
 architecture etageEX_arch of etageEX is
