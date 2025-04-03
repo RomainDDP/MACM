@@ -6,20 +6,19 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
-
 entity dataPath is
   port(
     clk,  init, ALUSrc_EX, MemWr_Mem, MemWr_RE, PCSrc_ER, Bpris_EX, Gel_LI, Gel_DI, RAZ_DI, RegWR, Clr_EX, MemToReg_RE : in std_logic;
     RegSrc, EA_EX, EB_EX, immSrc, ALUCtrl_EX : in std_logic_vector(1 downto 0);
     instr_DE: out std_logic_vector(31 downto 0);
     a1, a2, rs1, rs2, CC, op3_EX_out, op3_ME_out, op3_RE_out: out std_logic_vector(3 downto 0)
-);      
+);
 end entity;
 
 architecture dataPath_arch of dataPath is
   signal Res_RE, npc_fwd_br, pc_plus_4, i_FE, i_DE, Op1_DE, Op2_DE, Op1_EX, Op2_EX, extImm_DE, extImm_EX, Res_EX, Res_ME, WD_EX, WD_ME, Res_Mem_ME, Res_Mem_RE, Res_ALU_ME, Res_ALU_RE, Res_fwd_ME, instr_DE_t : std_logic_vector(31 downto 0);
   signal Op3_DE, Op3_EX, a1_DE, a1_EX, a2_DE, a2_EX, Op3_EX_out_t, Op3_ME, Op3_ME_out_t, Op3_RE, Op3_RE_out_t : std_logic_vector(3 downto 0);
-begin
+  begin
 
   -- FE
 
@@ -208,60 +207,4 @@ begin
   op3_EX_out <= op3_EX_out_t;
   op3_ME_out <= op3_ME_out_t;
   op3_RE_out <= op3_RE_out_t;
-  
 end architecture;
-
-
--------------------------------------------------------
-
--- Unité de contrôle et condition
-
-LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.NUMERIC_STD.ALL;
-
-
-entity controlUnit is
-  port(
-  instr : in std_logic_vector(31 downto 0);
-  PCsrc, RegWr, MemToReg, MemWr, Branch, CCWr, AluSrc : out std_logic;
-  AluCtrl, ImmSrc, RegSrc : out std_logic_vector(1 downto 0);
-  Cond : out std_logic_vector(3 downto 0)
-);
-end entity;
-
-architecture controlUnit_arch of controlUnit is
-begin
-  -- AluCtrl :
-  AluCtrl <= ("00") when instr(27 downto 26) = ("10") else
-            ("00") when instr(27 downto 26) = ("00") AND instr(24 downto 21) = ("0100") else
-            ("00") when instr(27 downto 26) = ("01") AND instr(23) = '0' else
-            ("01") when instr(27 downto 26) = ("00") AND instr(24 downto 21) = ("0010") else
-            ("01") when instr(27 downto 26) = ("00") AND instr(24 downto 21) = ("1010") else
-            ("01") when instr(27 downto 26) = ("01") AND instr(23) = '1' else
-            ("10") when instr(27 downto 26) = ("00") AND instr(24 downto 21) = ("0000") else
-            ("11") when instr(27 downto 26) = ("00") AND instr(24 downto 21) = ("1100") else
-            ("XX");
-  -- Branch :
-  Branch <= '1' when instr(27 downto 26) = ("10") else '0';
-
-  -- MemToReg :
-  MemToReg <= '1' when instr(27 downto 26) = ("01") else '0';
-
-  -- MemWr :
-  MemWr <= '1' when instr(27 downto 26) = ("01") else '0';
-
-  -- AluSrc :
-  AluSrc <= '0' when instr(27 downto 26) = ("00") AND instr(25) = '0' else '1';
-
-  -- ImmSrc :
-  ImmSrc <= ("00") when instr(27 downto 26) = ("00") else 
-            ("10") when instr(27 downto 26) = ("10") else ("01");
-
-  -- RegWr : Check plus loin à cause de COMP et reg/reg.
-  RegWr <= '0' when (instr(27 downto 24) = ("0001")) OR 
-                    (instr(27 downto 26) = ("01") AND instr(20) = '1') OR 
-                    (instr(27 downto 26) = ("10")) else '1';
-
-  -- RegSrc :
-end;
