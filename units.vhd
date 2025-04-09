@@ -10,7 +10,7 @@ entity controlUnit is
   port(
   instr : in std_logic_vector(31 downto 0);
   PCsrc, RegWr, MemToReg, MemWr, Branch, CCWr, AluSrc : out std_logic;
-  AluCtrl, ImmSrc, RegSrc : out std_logic_vector(1 downto 0);
+  AluCtrlrr, ImmSrc, RegSrc : out std_logic_vector(1 downto 0);
   Cond : out std_logic_vector(3 downto 0)
 );
 end entity;
