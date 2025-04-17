@@ -23,10 +23,11 @@ architecture dataPath_arch of dataPath is
   signal RegWr_ME, PCsrc_ME : std_logic;
   signal CC_DE, CC_EX : std_logic;
   signal Cond_DE, Cond, Cond_EX : std_logic_vector(3 downto 0);
- 
+
 begin
 
-  -- Control Unit
+-- Control Unit
+
   unit_ctrl : entity work.controlUnit(controlUnit_arch)
   port map(
     instr => instr_DE,
@@ -43,7 +44,8 @@ begin
     RegSrc => RegSrc
   );
 
-  -- Condition Unit
+-- Condition Unit
+
   unit_cond : entity work.condUnit(condUnit_arch)
   port map(
     CCwr_EX => CCWr_EX,
@@ -55,7 +57,8 @@ begin
     CC_bis => CC_DE
   );
   
-  -- Branch signal 
+-- Branch signal
+
   reg_branch_de : entity work.reg1(arch_reg)
   port map (
     source => Branch_DE,
@@ -67,7 +70,8 @@ begin
 
   Bprix_EX <= Branch_EX AND Cond_EX; 
 
-  -- PCsrc signal
+-- PCsrc signal
+
   reg_pcsrc_de : entity work.reg1(arch_reg)
   port map (
     source => PCsrc_DE,
@@ -95,7 +99,8 @@ begin
     raz => '1'
   );
 
-  -- RegWr signal
+-- RegWr signal
+
   reg_regwr_de : entity work.reg1(arch_reg)
   port map (
     source => RegWr_DE,
@@ -107,7 +112,7 @@ begin
 
   reg_regwr_ex : entity work.reg1(arch_reg)
   port map (
-    source => RegWr_EX,
+    source => RegWr_EX AND Cond_EX,
     output => RegWr_ME,
     clk => clk,
     wr => '1',
@@ -122,8 +127,9 @@ begin
     wr => '1',
     raz => '1' 
   );
-  
-  -- MemWr signal
+
+-- MemWr signal
+
   reg_memwr_de : entity work.reg1(arch_reg)
   port map (
     source => MemWR_DE,
@@ -142,7 +148,8 @@ begin
     raz => '1'
   );
 
-  -- MemToReg signal
+-- MemToReg signal
+
   reg_memtoreg_de : entity work.reg1(arch_reg)
   port map (
     source => MemToReg_DE,
@@ -170,8 +177,7 @@ begin
     raz => '1' 
   );
 
--- TODO : 
--- - CCWR et le reste.
+-- CCWR signal.
 
   reg_ccwr : entity work.reg1(arch_reg)
   port map (
@@ -182,6 +188,8 @@ begin
     raz => Clr_EX
   );
 
+-- AluCtrl signal.
+
   reg_aluctrl : entity work.reg1(arch_reg)
   port map (
     source => AluCtrl_DE,
@@ -190,6 +198,8 @@ begin
     wr => '1',
     raz => Clr_EX
   );
+
+-- AluSrc signal.
 
   reg_alusrc : entity work.reg1(arch_reg)
   port map (
@@ -200,6 +210,8 @@ begin
     raz => Clr_EX
   );
 
+-- Cond signal.
+
   reg_cond : entity work.reg4(arch_reg)
   port map (
     source => Cond_DE,
@@ -209,6 +221,8 @@ begin
     raz => Clr_EX
   );
 
+-- CC signal.
+
   reg_cc : entity work.reg4(arch_reg)
   port map (
     source => CC_DE,
@@ -216,28 +230,6 @@ begin
     clk => clk,
     wr => '1',
     raz => Clr_EX
-  );
-
-  
-
-
- 
-  reg_regwr_me : entity work.reg1(arch_reg)
-  port map (
-    source => RegWr_DE AND Cond_EX,
-    output => RegWr_ME,
-    clk => clk,
-    wr => '1',
-    raz => '1'
-  );
- 
-  reg_memtoreg_me : entity work.reg1(arch_reg)
-  port map (
-    source => RegWr_DE AND Cond_EX,
-    output => RegWr_ME,
-    clk => clk,
-    wr => '1',
-    raz => '1'
   );
 
 end architecture;
