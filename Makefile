@@ -1,6 +1,6 @@
 # Variables
-SRC = reg_bank.vhd mem.vhd combi.vhd etages.vhd units.vhd proc.vhd
-TOP_ENTITY = controlUnit
+SRC = reg_bank.vhd mem.vhd combi.vhd etages.vhd units.vhd dataPath.vhd unitsPath.vhd proc.vhd
+TOP_ENTITY = Processor
 EXEC = sim
 
 # Compiler
@@ -21,7 +21,7 @@ elaborate: analyze
 run: elaborate
 	$(GHDL) -r $(GHDLFLAGS) $(TOP_ENTITY) --wave=$(EXEC).ghw
 
-# View the waveform (requires GTKWave)
+# View the waveform
 view:
 	gtkwave $(EXEC).ghw &
 

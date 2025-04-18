@@ -21,7 +21,7 @@ architecture dataPath_arch of dataPath is
   signal Op3_DE, Op3_EX, a1_DE, a1_EX, a2_DE, a2_EX, Op3_EX_out_t, Op3_ME, Op3_ME_out_t, Op3_RE, Op3_RE_out_t : std_logic_vector(3 downto 0);
 
   -- variables pour control et cond.
-  signal Branch_DE, PCsrc_DE, RegWR_DE, MemWR_DE, MemToReg_DE, CCWr_DE, AluCtrl_DE, AluSrc_DE : std_logic;
+  signal Branch_DE, PCsrc_DE, RegWR_DE, MemWR_DE, MemToReg_DE, CCWr_DE, AluSrc_DE : std_logic;
   signal Cond_DE : std_logic_vector(3 downto 0);
   begin
 
@@ -229,24 +229,5 @@ architecture dataPath_arch of dataPath is
   op3_EX_out <= op3_EX_out_t;
   op3_ME_out <= op3_ME_out_t;
   op3_RE_out <= op3_RE_out_t;
-
-  -- Control Unit
-  unit_ctrl : entity work.controUnit(controlUnit_arch)
-  port map(
-    instr => instr_DE_t,
-    Cond => Cond_DE,
-    Branch => Branch_DE,
-    PCSrc => PCsrc_DE,
-    RegWr => RegWr_DE,
-    MemWR => MemWR_DE,
-    CCWr => CCWr_DE,
-    AluCtrl => AluCtrl_DE,
-    AluSrc => AluSrc_DE,
-    ImmSrc => immSrc,
-    RegSrc => RegSrc
-  );
-
-  
-
 
 end architecture;
