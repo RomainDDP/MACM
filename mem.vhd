@@ -15,7 +15,7 @@ begin
     file mem_file: TEXT;
     variable L: line;
     variable ch: character;
-    variable i, index, result: integer;
+    variable index, result: integer;
     variable conv : std_logic_vector(3 downto 0);
     type ramtype is array (63 downto 0) of 
                     STD_LOGIC_VECTOR(31 downto 0);

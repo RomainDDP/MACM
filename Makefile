@@ -1,6 +1,6 @@
 # Variables
-SRC = reg_bank.vhd mem.vhd combi.vhd etages.vhd units.vhd dataPath.vhd unitsPath.vhd proc.vhd
-TOP_ENTITY = Processor
+SRC = reg_bank.vhd mem.vhd combi.vhd etages.vhd units.vhd dataPath.vhd unitsPath.vhd proc.vhd test_processor.vhd
+TOP_ENTITY = test_processor 
 EXEC = sim
 
 # Compiler

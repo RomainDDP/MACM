@@ -1,6 +1,6 @@
 -------------------------------------------------------
 
--- Chemin de données
+-- Chemin de données des unités de contrôle et conditions
 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
@@ -12,16 +12,17 @@ entity unitsPath is
     instr_DE : in std_logic_vector(31 downto 0);
     CC : in std_logic_vector(3 downto 0);
 
-    Bpris_EX, PCsrc_ER, RegWr, MemWR_Mem, AluSrc_EX, RegWr_ME, MemToReg_RE : out std_logic;
-    RegSrc, ImmSrc, AluCtrl_EX : out std_logic_vector(1 downto 0)
+    Bpris_EX, PCsrc_ER, RegWr, MemWR_Mem, AluSrc_EX, RegWr_ME, MemToReg_EX, MemToReg_RE : out std_logic;
+    RegSrc, ImmSrc, AluCtrl_EX : out std_logic_vector(1 downto 0);
+    PCsrc_DE_out, PCsrc_EX_out, PCsrc_ME_out : out std_logic
   );
 end entity;
 
 architecture unitsPath_arch of unitsPath is
 
   signal Branch_DE, PCsrc_DE, RegWR_DE, MemWR_DE, MemToReg_DE, CCWr_DE, AluSrc_DE,
-  Branch_EX, PCsrc_EX, tmp_PCsrc_EX, RegWR_EX, tmp_RegWR_EX, MemWR_EX, MemToReg_EX, CCWr_EX, Cond_EX,
-  PCsrc_ME, RegWr_ME_t: std_logic;
+  Branch_EX, PCsrc_EX, tmp_PCsrc_EX, RegWR_EX, tmp_RegWR_EX, MemWR_EX, MemToReg_EX_t, CCWr_EX, Cond_EX,
+  PCsrc_ME, RegWr_ME_t, MemToReg_ME: std_logic;
   signal Cond_DE, Cond, CC_EX, CC_DE: std_logic_vector(3 downto 0);
   signal AluCtrl_DE : std_logic_vector(1 downto 0); 
 
@@ -101,6 +102,9 @@ begin
     raz => '1'
   );
 
+  PCsrc_DE_out <= PCsrc_DE;
+  PCsrc_EX_out <= tmp_PCsrc_EX;
+  PCsrc_ME_out <= PCsrc_ME;
 -- RegWr signal
 
   reg_regwr_de : entity work.reg1
@@ -157,7 +161,7 @@ begin
   reg_memtoreg_de : entity work.reg1
   port map (
     source => MemToReg_DE,
-    output => MemToReg_EX,
+    output => MemToReg_EX_t,
     clk => clk,
     wr => '1',
     raz => Clr_EX
@@ -165,7 +169,7 @@ begin
   
   reg_memtoreg_ex : entity work.reg1
   port map (
-    source => MemToReg_EX,
+    source => MemToReg_EX_t,
     output => MemToReg_ME,
     clk => clk,
     wr => '1',
@@ -235,5 +239,7 @@ begin
     wr => '1',
     raz => Clr_EX
   );
+
+  MemToReg_EX <= MemToReg_EX_t;
 
 end architecture;

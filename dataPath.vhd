@@ -8,10 +8,12 @@ USE IEEE.NUMERIC_STD.ALL;
 
 entity dataPath is
   port(
-    clk,  init, ALUSrc_EX, MemWr_Mem, MemWr_RE, PCSrc_ER, Bpris_EX, Gel_LI, Gel_DI, RAZ_DI, RegWR, Clr_EX, MemToReg_RE : in std_logic;
+    clk,  init, ALUSrc_EX, MemWr_Mem, PCSrc_ER, Bpris_EX, 
+    Gel_LI, Gel_DI, RAZ_DI, RegWR, Clr_EX, MemToReg_RE : in std_logic;
     RegSrc, EA_EX, EB_EX, immSrc, ALUCtrl_EX : in std_logic_vector(1 downto 0);
     instr_DE: out std_logic_vector(31 downto 0);
-    a1, a2, rs1, rs2, CC, op3_EX_out, op3_ME_out, op3_RE_out: out std_logic_vector(3 downto 0)
+    Reg1, Reg2 : out std_logic_vector(3 downto 0); -- Pour LDR_Stall
+    a1, a2, CC, op3_EX_out, op3_ME_out, op3_RE_out: out std_logic_vector(3 downto 0)
 );
 end entity;
 
@@ -224,6 +226,8 @@ architecture dataPath_arch of dataPath is
   );
 
   instr_DE <= instr_DE_t;
+  Reg1 <= a1_DE;
+  Reg2 <= a2_DE;
   a1 <= a1_EX;
   a2 <= a2_EX;
   op3_EX_out <= op3_EX_out_t;
